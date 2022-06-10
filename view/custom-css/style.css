@@ -1,0 +1,168 @@
+html{
+    height: 100%;
+    min-height: 100%;
+}
+
+body{
+    height: 100%;
+    min-height: 100%;
+    background-color: rgb(224, 205, 218);
+}
+
+.header{
+    width: 100%;
+    min-width: 100%;
+    height: 10%;
+    min-height: 10%;
+    background-color: #fff;
+    margin-top: 0px;
+    align-content: center;
+}
+
+.header > div{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+}
+
+.header > div > img {
+    width: 12%;
+}
+
+.menu{
+    width: 15%;
+    min-width: 15%;
+    height: 100%;
+    min-height: 100%;
+    background-color: rgb(243, 232, 232)
+}
+
+.menu-item{
+    height: 50px;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.menu-item > a{
+    color: #000;
+}
+
+.body-center{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.login-card{
+    width: 30% !important;
+    background-color: orange !important;
+}
+
+.card-body{
+    width: 100%;
+}
+
+.button-form{
+    width: 100%;
+}
+
+.button-form > button{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.form-link{
+    width: 100%;
+}
+
+.form-image{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-image > img{
+    width: 50%;
+}
+
+.full-center{
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.slds-nav-vertical_shade .slds-is-active .slds-nav-vertical__action {
+    border: none !important;
+}
+
+.content-body{
+    padding: 20px;
+    width: 90%;
+}
+
+.body-container{
+    display: flex;
+    height: 90%;
+    min-height: 90%;
+    width: 100%;
+}
+
+.card-body{
+    padding: 20px;
+}
+
+.button-action{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: end;
+}
+
+.label-close{
+    color: #fff;
+    font-size:15px;
+    font-weight: bolder;
+}
+
+.button-close{
+    background-color: transparent;
+    border: none;
+}
+
+.field-group{
+    display: flex;
+    align-items: flex-end;
+}
+
+.field-group > .slds-form-element{
+    margin-right: 20px;
+}
+
+.field-group-title{
+    margin-top: 20px;
+}
+
+.buttom-group{
+    background-color: orange;
+    justify-content: end;
+    align-items: flex-end;
+    align-content: flex-end;
+}
+
+.readonly-group-field{
+    margin-top: 20px !important;
+}
+
+.read-only-input{
+    cursor: none;
+}
+
+.bar-code{
+    margin-top: 15px;
+}

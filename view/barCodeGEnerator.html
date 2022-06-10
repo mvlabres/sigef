@@ -1,0 +1,53 @@
+<html>
+<head>
+    <script src="JS/JsBarcode.all.min.js"></script>
+    <script>
+    function GerarCódigoDeBarras(elementoInput) {
+        let configuracao = {
+            format: "CODE128",
+            lineColor: "#000",
+            width: 1.5,
+            height: 50,
+            displayValue: true,
+            valid: function (valido) {
+                if (valido) {
+                    document.getElementById("mensagem").innerHTML = "";
+                } else {
+                    document.getElementById("mensagem").innerHTML = "Valor invalido";
+        
+                }
+            }
+        };
+        JsBarcode('#barcode', elementoInput.value, configuracao);
+    }
+</script>
+</head>
+<body>
+
+    <div class="printable">
+        <svg  style=" margin-top: 10px;" id="barcode"></svg>
+    </div>
+
+<p id="mensagem"></p>
+
+<div style="margin-top: 350px;">
+    <label class="noprint">Digite um valor</label>
+    <input class="noprint" type="text" onblur="GerarCódigoDeBarras(this)" />
+</div>
+</body>
+</html>
+<style>
+
+    .printable{
+        background-color: orange;
+        height: 100px;
+    }
+    @media print {
+        body {
+            visibility: hidden;
+        }
+        .printable {
+            visibility: visible;
+        }
+    }
+</style>
