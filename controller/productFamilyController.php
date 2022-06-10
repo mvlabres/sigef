@@ -1,6 +1,6 @@
 <?php
-    require('../repositorys/productFamilyRepository.php');
-    require('../model/productFamily.php');
+    require_once('../repositorys/productFamilyRepository.php');
+    require_once('../model/productFamily.php');
 
     class ProductFamilyController{
 

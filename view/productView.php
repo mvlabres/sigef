@@ -1,7 +1,10 @@
 <?php
 
     require('../controller/productController.php');
-    
+
+    $productController = new ProductController(null);
+
+    $relationship = $productController->findRelationship();
    
 ?>
 
@@ -67,7 +70,13 @@
                                 <div class="slds-select_container">
                                     <select class="slds-select" id="select-01">
                                         <option value="">Selecione uma opção</option>
-                                        <option>Option One</option>
+
+                                        <?php  
+                                        
+                                        foreach($relationship['priceTable'] as $priceTable){
+                                            echo '<option value"'. $priceTable->getId() .'">Preço de custo R$ '. $priceTable->getCostPrice() .' - Preço final R$ '. $priceTable->getFinalPrice() .'</option>';  
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                             </div>

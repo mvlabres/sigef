@@ -1,19 +1,32 @@
 <?php
 
-    require('../repositorys/productRepository.php');
-    require('../repositorys/priceTableRepository.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+    include_once('../repositorys/productRepository.php');
+    include_once('priceTableController.php');
+    include_once('productFamilyController.php');
+    include_once('../model/product.php');
 
     class ProductController{
 
         private $product;
         private $post;
         private $productRepository;
-        private $priceTableRepository;
+        private $priceTableController;
+        private $productFamilyController;
+
+        private $RELATIONSHIP = [
+            'priceTable' => [],
+            'productFamily' => []
+        ];
 
         public function init(){
             $this->product = new Product();
             $this->productRepository = new ProductRepository();
-            $this->priceTableRepository = new PriceTableRepository();
+            $this->priceTableController = new PriceTableController(null);
+            $this->productFamilyController = new ProductFamilyController(null);
         }
 
         public function __construct($post){
@@ -28,8 +41,12 @@
             return new Product();
         }
 
-        public function findPriceTable(){
-            $this->priceTableRepository->findAll();
+        public function findRelationship(){
+
+            $this->RELATIONSHIP['priceTable'] = $this->priceTableController->findAll();
+            $this->RELATIONSHIP['productFamily'] = $this->productFamilyController->findAll();
+
+            return $this->RELATIONSHIP;
         }
 
 
@@ -57,38 +74,5 @@
 
         //     return $productsFamily;
         // }
-
-        public function setFields(){
-
-            $this->priceTable->setId($this->post['id']);
-            $this->priceTable->setCostPrice($this->post['costPrice']);
-            $this->priceTable->setUnitCost($this->post['unitCost']);
-            $this->priceTable->setVariableCost($this->post['variableCost']);
-            $this->priceTable->setFixedCost($this->post['fixedCost']);
-            $this->priceTable->setMarkup($this->post['markup']);
-            $this->priceTable->setTotalCost($this->post['totalCost']);
-            $this->priceTable->setFinalPrice($this->post['finalPrice']);
-            $this->priceTable->setProfitMargin($this->post['profitMargin']);
-
-        }
-
-        public function calculate(){
-
-            $this->setFields();
-
-            $totalCost = $this->priceTable->getUnitCost() + $this->priceTable->getVariableCost() + $this->priceTable->getFixedCost() + $this->priceTable->getCostPrice();
-
-            $this->priceTable->setTotalCost( $totalCost );
-
-            $this->priceTable->setFinalPrice( $this->priceTable->getCostPrice() * ( $this->priceTable->getMarkup() / 100 ));
-
-            $this->priceTable->setProfitMargin( floatval(($this->priceTable->getTotalCost() / $this->priceTable->getFinalPrice()) * 100));
-
-            $this->priceTable->setProfit( floatval($this->priceTable->getFinalPrice() - $this->priceTable->getTotalCost()));
-
-            $this->priceTable->setProfitMargin( round(($this->priceTable->getProfit() / $this->priceTable->getFinalPrice()) *100, 2) );
-
-            return $this->priceTable;
-        }
     }
 ?>

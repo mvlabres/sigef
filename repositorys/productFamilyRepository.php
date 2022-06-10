@@ -1,6 +1,6 @@
 <?php
 
-require('../controller/connection.php');
+require_once('../controller/connection.php');
 
 class ProductFamilyRepository{
     

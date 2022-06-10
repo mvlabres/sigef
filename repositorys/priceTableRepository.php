@@ -1,6 +1,6 @@
 <?php
 
-require('../controller/connection.php');
+include_once('../controller/connection.php');
 
 class PriceTableRepository{
     
@@ -16,19 +16,20 @@ class PriceTableRepository{
         $this->priceTable = $priceTable;
     }
 
-    // public function findAll(){
+    public function findAll(){
 
-    //     try{
+        try{
 
-    //         $sql = "SELECT id, description FROM ProductFamily ORDER BY description ASC";
+            $sql = "SELECT id, costPrice, unitCost, variableCost, fixedCost, totalCost, finalPrice, markup, profitMargin 
+                    FROM Price ORDER BY costPrice ASC";
 
-    //         $result = $this->mySqli->query($sql);
-    //         return $result;
+            $result = $this->mySqli->query($sql);
+            return $result;
 
-    //     }catch(Exception $e){
-    //         return false;
-    //     }
-    // }
+        }catch(Exception $e){
+            return false;
+        }
+    }
 
     public function create(){
 

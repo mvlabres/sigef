@@ -1,7 +1,7 @@
 <?php
 
-    require('../model/priceTable.php');
-    require('../repositorys/priceTableRepository.php');
+    require_once('../model/priceTable.php');
+    require_once('../repositorys/priceTableRepository.php');
 
     class PriceTableController{
 
@@ -26,7 +26,6 @@
             return new PriceTable();
         }
 
-
         public function create(){
 
             $this->setFields();
@@ -34,23 +33,30 @@
             return $this->priceTableRepository->create();
         }
 
-        // public function findAll(){
+        public function findAll(){
 
-        //     $productFamily = new ProductFamily();
-        //     $productsFamily = array();
+            $priceTable = new PriceTable();
+            $priceTables = array();
 
-        //     $result = $this->productFamilyRepository->findAll();
+            $result = $this->priceTableRepository->findAll();
 
-        //     while ($data = $result->fetch_assoc()){ 
-        //         $productFamily = new ProductFamily();
-        //         $productFamily->setId($data['id']);
-        //         $productFamily->setDescription($data['description']);
-                
-        //         array_push($productsFamily, $productFamily);
-        //     }
+            while ($data = $result->fetch_assoc()){ 
+                $priceTable = new PriceTable();
+                $priceTable->setId($data['id']);
+                $priceTable->setCostPrice($data['costPrice']);
+                $priceTable->setUnitCost($data['unitCost']);
+                $priceTable->setVariableCost($data['variableCost']);
+                $priceTable->setFixedCost($data['fixedCost']);
+                $priceTable->setTotalCost($data['totalCost']);
+                $priceTable->setFinalPrice($data['finalPrice']);
+                $priceTable->setMarkup($data['markup']);
+                $priceTable->setProfitMargin($data['profitMargin']);
 
-        //     return $productsFamily;
-        // }
+                array_push($priceTables, $priceTable);
+            }
+
+            return $priceTables;
+        }
 
         public function setFields(){
 
