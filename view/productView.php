@@ -51,9 +51,14 @@
                                 <label class="slds-form-element__label" for="select-01">Famíla do produto</label>
                                 <div class="slds-form-element__control">
                                     <div class="slds-select_container">
-                                        <select class="slds-select" id="select-01">
+                                        <select class="slds-select" id="select-01" >
                                             <option value="">Selecione uma opção</option>
-                                            <option value="">Option One</option>
+                                            <?php
+                                            foreach($relationship['productFamily'] as $productFamily){
+                                                echo '<option value="'.$productFamily->getId().'" >'.$productFamily->getDescription().'</option>';
+                                            }
+
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
@@ -68,7 +73,7 @@
                             <label class="slds-form-element__label" for="select-01">Grupo de precificação</label>
                             <div class="slds-form-element__control">
                                 <div class="slds-select_container">
-                                    <select class="slds-select" id="select-01">
+                                    <select class="slds-select" id="select-01" onchange="handlePriceChange()">
                                         <option value="">Selecione uma opção</option>
 
                                         <?php  

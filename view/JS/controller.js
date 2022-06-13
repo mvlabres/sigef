@@ -98,3 +98,28 @@ function handleProductLoad(){
     }, 10);
 }
 
+function handlePriceChange(){
+
+    ajaxConnect('id', 'post', '../controller/ajax/getPrices.php');
+}
+
+function ajaxConnect(parameter, type, url){
+
+    try {
+        
+        $.ajax({
+            url: url,
+            type: type,
+            data: {data: parameter},
+    
+            success: function(response) {
+                
+                console.log(response);
+            }
+        }) 
+
+    } catch (error) {
+        console.log(error);   
+    }
+}
+
