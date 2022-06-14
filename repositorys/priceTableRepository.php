@@ -31,6 +31,21 @@ class PriceTableRepository{
         }
     }
 
+    public function findById($id){
+
+        try{
+
+            $sql = "SELECT id, costPrice, unitCost, variableCost, fixedCost, totalCost, finalPrice, markup, profitMargin 
+                    FROM Price WHERE id = ".$id;
+
+            $result = $this->mySqli->query($sql);
+            return $result;
+
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
     public function create(){
 
         try{

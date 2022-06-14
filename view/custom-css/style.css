@@ -9,6 +9,10 @@ body{
     background-color: rgb(224, 205, 218);
 }
 
+.body-print{
+    background-color: #fff !important;
+}
+
 .header{
     width: 100%;
     min-width: 100%;
@@ -164,5 +168,51 @@ body{
 }
 
 .bar-code{
+    
+}
+
+.barcode-element{
+    width: 25%;
     margin-top: 15px;
+}
+
+#button-print, #print-label{
+    margin-top: 10px;
+    width: 100%;
+}
+
+.print-container{
+    display: flex;
+    flex-direction: column;
+    width: 185px;
+}
+
+.print-value-price, .print-value-size{
+    width: 80%;
+}
+
+.print-value-size{
+    margin-left: 10px;
+}
+
+.print-value-price{
+    margin-left: 10px;
+}
+
+.print-label-container{
+    display: flex;
+    flex-direction: row;
+}
+
+@media print {
+    body, .body-print {
+        visibility: hidden;
+    }
+    .printable {
+        visibility: visible;
+    }
+
+    @page {
+        margin:0;
+      }
 }

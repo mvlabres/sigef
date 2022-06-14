@@ -1,5 +1,17 @@
 <?php
 
+if( $_SERVER['REQUEST_METHOD'] =='POST' ){
+    $request = md5( implode( $_POST ) );
+    
+    if( isset( $_SESSION['last_request'] ) && $_SESSION['last_request']== $request ){
+        echo 'refresh';
+    }
+    else{
+        $_SESSION['last_request'] = $request;
+
+    }
+}
+
 function sec_session_start() {
     error_reporting(0);
     date_default_timezone_set("America/Sao_Paulo");

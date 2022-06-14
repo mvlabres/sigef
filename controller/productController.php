@@ -46,12 +46,52 @@
         }
 
 
-        // public function create(){
+        public function create(){
 
-        //     $this->setFields();
-        //     $this->priceTableRepository->setPriceTable($this->priceTable);
-        //     return $this->priceTableRepository->create();
-        // }
+            $this->setFields();
+            $this->productRepository->setProduct($this->product);
+            return $this->productRepository->create();
+        }
+
+        public function getLastCreated(){
+            $result = $this->productRepository->findLastCreated();
+            $products = $this->getResultValues($result);
+            return $products[0]; 
+        }
+
+        public function getResultValues($result){
+
+            $products = array();
+
+            while ($data = $result->fetch_assoc()){ 
+                $product = new Product();
+                $product->setId($data['id']);
+                $product->setDescription($data['description']);
+                $product->setPriceTableId($data['priceId']);
+                $product->setBarcode();
+                $product->setSize($data['size']);
+                $product->setProductFamilyId($data['productFamilyId']);
+                $product->setPriceTableId($data['priceId']); 
+
+                array_push($products, $product);
+
+                return $products;
+            }
+
+        }
+
+        public function setFields(){
+
+            $this->product->setId($this->post['productId']);
+            $this->product->setDescription($this->post['description']);
+            $this->product->setPriceTableId($this->post['priceTable']);
+            $this->product->setSize($this->post['size']);
+            $this->product->setProductFamilyId($this->post['productFamily']);
+            $this->product->setBarcode();
+
+        }
+
+       
 
         // public function findAll(){
 

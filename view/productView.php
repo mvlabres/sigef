@@ -1,10 +1,41 @@
 <?php
 
-    require('../controller/productController.php');
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
+    require_once('../controller/productController.php');
+    require_once('../model/product.php');
+    require_once('../utils/toast.php');
+
+    
+
+    $product = new Product();
     $productController = new ProductController(null);
+    $toast = new Toast();
 
     $relationship = $productController->findRelationship();
+
+    if(isset($_POST['action'])){
+
+        $productController = new ProductController($_POST);
+
+        switch ($_POST['action']) {
+            case 'save': {
+
+                if($productController->create()) header('Location: home.php?content=productView.php&messageType=product-success&status=success');
+                
+                else header('Location: home.php?content=productView.php&messageType=product-error');
+                
+                break;
+            }
+        }
+    }
+
+    if(isset($_GET['status'])){
+    
+        $product = $productController->getLastCreated();
+    }
    
 ?>
 
@@ -15,13 +46,13 @@
         <div class="slds-card__header slds-grid">
             <header class="slds-media slds-media_center slds-has-flexi-truncate">
                 <div class="slds-media__figure">
-                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                    <span class="slds-icon_container slds-icon-standard-account">
                         <span class="slds-assistive-text"></span>
                     </span>
                 </div>
                 <div class="slds-media__body">
                     <h2 class="slds-card__header-title">
-                        <a href="#" class="slds-card__header-link slds-truncate" title="Accounts">
+                        <a href="#" class="slds-card__header-link slds-truncate">
                             <span>Produtos</span>
                         </a>
                     </h2>
@@ -36,26 +67,30 @@
                     <div class="slds-form-element">
                         <label class="slds-form-element__label">Descrição</label>
                         <div class="slds-form-element__control">
-                            <input name="description" type="text" class="slds-input" required />
+                            <input id="description" name="description" type="text" class="slds-input" value="<?php if($product->getDescription() != null) echo $product->getDescription(); ?>" required />
                         </div>
                     </div>
                     <div class="slds-grid slds-grid_align-start field-group">
                         <div class="slds-form-element slds-size_1-of-3">
                             <label class="slds-form-element__label">Tamanho</label>
                             <div class="slds-form-element__control">
-                                <input name="size" type="text" class="slds-input" required />
+                                <input id="size" name="size" type="text" class="slds-input" value="<?php if($product->getSize() != null) echo $product->getSize(); ?>" required />
                             </div>
                         </div>
                         <div class="slds-form-element slds-size_1-of-3">
                             <div class="slds-form-element">
-                                <label class="slds-form-element__label" for="select-01">Famíla do produto</label>
+                                <label class="slds-form-element__label" for="productFamily">Famíla do produto</label>
                                 <div class="slds-form-element__control">
                                     <div class="slds-select_container">
-                                        <select class="slds-select" id="select-01" >
+                                        <select value="" name="productFamily" class="slds-select" id="productFamily" required>
                                             <option value="">Selecione uma opção</option>
                                             <?php
                                             foreach($relationship['productFamily'] as $productFamily){
-                                                echo '<option value="'.$productFamily->getId().'" >'.$productFamily->getDescription().'</option>';
+
+                                                $selected = '';
+
+                                                if($productFamily->getId() == $product->getProductFamilyId()) $selected = 'selected';
+                                                echo '<option value="'.$productFamily->getId().'" '. $selected.'>'.$productFamily->getDescription().'</option>';
                                             }
 
                                             ?>
@@ -69,74 +104,49 @@
                         <h2><b>Dados de precificação</b></h2>
                     </div>
                     <div class="slds-grid slds-grid_align-start field-group">
-                        <div class="slds-form-element slds-size_1-of-2">
-                            <label class="slds-form-element__label" for="select-01">Grupo de precificação</label>
+                        <div class="slds-form-element slds-size_5-of-6">
+                            <label class="slds-form-element__label" for="priceTable">Grupo de precificação</label>
                             <div class="slds-form-element__control">
                                 <div class="slds-select_container">
-                                    <select class="slds-select" id="select-01" onchange="handlePriceChange()">
+                                    <select id="priceTable" class="slds-select" name="priceTable" onchange="handlePriceChange()" required>
                                         <option value="">Selecione uma opção</option>
 
                                         <?php  
                                         
                                         foreach($relationship['priceTable'] as $priceTable){
-                                            echo '<option value"'. $priceTable->getId() .'">Preço de custo R$ '. $priceTable->getCostPrice() .' - Preço final R$ '. $priceTable->getFinalPrice() .'</option>';  
+
+                                            $selected = '';
+
+                                            if($priceTable->getId() == $product->getPriceTableId()) $selected = 'selected';
+                                            echo '<option value="'. $priceTable->getId() .'" '.$selected .'>'. $priceTable->getPriceLabel() .'</option>';  
                                         }
                                         ?>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="slds-form-element slds-size_1-of-2">
+                        <div class="slds-form-element slds-size_1-of-6">
                             <button class="slds-button slds-button_brand">Novo</button>
                         </div>
                     </div>
 
-                    <div id="readOnly" class="readonly-group-field">
-                        <div class="slds-grid slds-grid_align-start field-group">
-                            <div class="slds-form-element slds-size_1-of-5">
-                                <label class="slds-form-element__label">Custo fixo</label>
-                                <div class="slds-form-element__control">
-                                    <input name="size" type="currency" class="slds-input" readonly />
-                                </div>
-                            </div>
-    
-                            <div class="slds-form-element slds-size_1-of-5">
-                                <label class="slds-form-element__label">Custo variável</label>
-                                <div class="slds-form-element__control">
-                                    <input name="size" type="currency" class="slds-input" readonly />
-                                </div>
-                            </div>
-    
-                            <div class="slds-form-element slds-size_1-of-5">
-                                <label class="slds-form-element__label">Custo unt</label>
-                                <div class="slds-form-element__control">
-                                    <input name="size" type="currency" class="slds-input" readonly />
-                                </div>
-                            </div>
-    
-                            <div class="slds-form-element slds-size_1-of-5">
-                                <label class="slds-form-element__label">Custo total</label>
-                                <div class="slds-form-element__control">
-                                    <input name="size" type="currency" class="slds-input" readonly />
-                                </div>
-                            </div>
-                        </div>
+                    <input id="barcodeData" value="<?php if($product->getBarcode() != null) echo $product->getBarcode(); ?>" type="hidden" />
+                    <input id="action" name="action" value="save" type="hidden" />
+                    <input id="productId" name="productId" value="<?php if($product->getId() != null) echo $product->getId() ?>" type="hidden" />
+
+                    <div id="barcode-container" class="slds-grid slds-grid_align-center barcode-element">
     
                         <div class="slds-form-element slds-size_1-of-3">
-                            <label class="slds-form-element__label">Preço final</label>
-                            <div class="slds-form-element__control">
-                                <input id="finalPrice" name="size" type="currency" class="slds-input" readonly />
-                            </div>
-                        </div>
-    
-                        <div class="slds-form-element slds-size_1-of-3">
-                            <label class="slds-form-element__label">Código de barras</label>
+                            <label id="print-label" class="slds-form-element__label">Código de barras</label>
                             
                             <div class="bar-code">
                                 <svg  style=" margin-top: 10px;" id="barcode"></svg>
+                                <p id="feedback"></p>
                             </div>
                         </div>
+                        <?php echo "<a  href='barCodePrint.php?barcode=".$product->getBarcode()."&priceid=".$product->getPriceTableId()."' id='button-print' class='slds-button slds-button_brand'>Imprimir</a>"; ?> 
                     </div>
+
                     
                     <div class="button-action" role="group">
                         <a href="home.php" class="slds-button slds-button_neutral">Cancelar</a>
@@ -144,7 +154,6 @@
                     </div>
                 </div>
 
-                <input name="action" value="" type="hidden" />
 
             </form>
         </div>

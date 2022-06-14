@@ -75,32 +75,78 @@ function handlePriceLoad(){
         }
     
         saveButton.disabled = false;
-    }, 10);
+    }, 100);
 }
 
 function handleProductLoad(){
 
     setTimeout(() => {
         
-        const finalPrice = document.querySelector('[id="finalPrice"]').value;
-        const priceContainer = document.querySelector('[id="readOnly"]');
-        const saveButton = document.querySelector('[id="priceSave"]');
+        const productId = document.getElementById("productId").value;
+        const barcodeContainer = document.querySelector('[id="barcode-container"]');
+        const barcodeFieldValue = document.getElementById('barcodeData').value;
     
-        if(!finalPrice || finalPrice === '' || finalPrice === '0' ){
-            priceContainer.style.display = 'none';
-            saveButton.disabled = true;
+        if(!productId || productId === '' ){
+            barcodeContainer.style.display = 'none';
             return;
         }
+
+        const fisldsTodisabled = [
+            document.getElementById("description"),
+            document.getElementById("size"),
+            document.getElementById("productFamily"),
+            document.getElementById("priceTable")
+        ];
     
-        priceContainer.style.display = 'block';
-        saveButton.disabled = false;
+        barcodeContainer.style.display = 'block';
+
+        generatebarCode(barcodeFieldValue);
+
+        disabledFilds(fisldsTodisabled);
         
     }, 10);
 }
 
+function disabledFilds(fields){
+
+    fields.forEach(element => {
+        element.disabled = true;
+    });
+}
+
+function handlePrintLoad(){
+
+    const barcodeFieldValue = document.getElementById('barcodeData').value;
+
+    generatebarCode(barcodeFieldValue);
+
+    window.print();
+
+    setTimeout(() => {
+        history.back();
+    }, 50);
+
+}
+
+function generatebarCode(barcodeFieldValue) {
+    let settings = {
+        format: "EAN13",
+        lineColor: "#000",
+        width: 1.4,
+        height: 60,
+        displayValue: true,
+        valid: function (valido) {
+            if (valido) document.getElementById("feedback").innerHTML = "";
+            else document.getElementById("feedback").innerHTML = "Valor invalido";
+        }
+    };
+
+    JsBarcode('#barcode', barcodeFieldValue, settings);
+}
+
 function handlePriceChange(){
 
-    ajaxConnect('id', 'post', '../controller/ajax/getPrices.php');
+    
 }
 
 function ajaxConnect(parameter, type, url){

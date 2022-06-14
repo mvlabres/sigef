@@ -12,6 +12,7 @@
         private $markup;
         private $profitMargin;
         private $profit;
+        private $priceLabel;
 
         public function setId($id){
             $this->id = $id;
@@ -91,6 +92,14 @@
 
         public function getProfit(){
             return $this->profit;
+        }
+
+        public function setPriceLabel($priceLabel){
+            $this->priceLabel = $priceLabel;
+        }
+
+        public function getPriceLabel(){
+            return $this->priceLabel;
         }
     }
 ?>

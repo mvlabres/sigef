@@ -52,6 +52,8 @@
                 $priceTable->setMarkup($data['markup']);
                 $priceTable->setProfitMargin($data['profitMargin']);
 
+                $this->buildPricesLabel($priceTable);
+
                 array_push($priceTables, $priceTable);
             }
 
@@ -89,6 +91,20 @@
             $this->priceTable->setProfitMargin( round(($this->priceTable->getProfit() / $this->priceTable->getFinalPrice()) *100, 2) );
 
             return $this->priceTable;
+        }
+
+        public function buildPricesLabel($priceTable){
+
+            $priceLabel = '';
+
+            $priceLabel .= 'Preço de custo: R$ ' . $priceTable->getCostPrice();
+            $priceLabel .= ' - Custo fixo: R$ ' . $priceTable->getFixedCost();
+            $priceLabel .= ' - Custo var.: R$ ' . $priceTable->getVariableCost();
+            $priceLabel .= ' - Custo unt.: R$ ' . $priceTable->getUnitCost();
+            $priceLabel .= ' - Markup: R$ ' . $priceTable->getMarkup();
+            $priceLabel .= ' - Preço final: R$ ' . $priceTable->getFinalPrice();
+
+            $priceTable->setPriceLabel($priceLabel);
         }
     }
 ?>

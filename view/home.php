@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
     require('../utils/toast.php');
     require('../controller/session.php');
 
@@ -26,6 +30,7 @@
         $toast = new Toast();
 
         $toastContent = $toast->showToast($messageType);
+
     }
 ?>
 
@@ -38,6 +43,7 @@
     <script src="JS/controller.js"></script>
     <script src="JS/JsBarcode.all.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="JS/JsBarcode.all.min.js"></script>
 </head>
 
 <body>

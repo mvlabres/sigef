@@ -5,15 +5,22 @@
         private $MESSAGE_BY_TYPES = [
             'product-family-success' => ['variant'=> 'success', 'message'=> 'Registro criado com sucesso!'],
             'product-success' => ['variant'=> 'success', 'message'=> 'Produto criado com sucesso!'],
+            'product-error' => ['variant'=> 'error', 'message'=> 'Erro ao criar produto!'],
             'price-table-success' => ['variant'=> 'success', 'message'=> 'tabela de preço criada com sucesso!'],
         ];
 
         public function showToast($toastType){
 
             switch ($this->MESSAGE_BY_TYPES[$toastType]['variant']) {
-                case 'success':
+                case 'success': {
                     return $this->toastSuccess($this->MESSAGE_BY_TYPES[$toastType]['message']);
                     break;
+                }
+
+                case 'error': {
+                    return $this->toastError($this->MESSAGE_BY_TYPES[$toastType]['message']);
+                    break;
+                }
             }
         }
 
@@ -22,10 +29,13 @@
         }
 
         public function toastError($message){
-            return toast($message, 'slds-theme_error', 'error');
+
+            $test = $this->toast($message, 'slds-theme_error', 'error');
+            return $test;
         }
 
         public function toast($message, $theme, $variant){
+
             return '
             <div class="slds-notify_container" id="close-toast">
                 <div class="slds-notify slds-notify_toast '.$theme.'" role="status">
