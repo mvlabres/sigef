@@ -1,16 +1,16 @@
 <?php
 
-    require_once('../model/priceTable.php');
-    require_once('../repositorys/priceTableRepository.php');
+    require_once('../model/product.php');
+    require_once('../repositorys/productRepository.php');
 
     class PrintBarcodeController{
 
-        private $priceTable;
-        private $priceTableRepository;
+        private $product;
+        private $productRepository;
 
         public function init(){
-            $this->priceTable = new PriceTable();
-            $this->priceTableRepository = new PriceTableRepository();
+            $this->product = new Product();
+            $this->productRepository = new ProductRepository();
         }
 
         public function __construct(){
@@ -18,25 +18,19 @@
             $this->init();
         }
 
-        public function findById($priceId){
+        public function findById($productId){
 
-            $priceTable = new PriceTable();
-            $result = $this->priceTableRepository->findById($priceId);
+            $product = new Product();
+            $result = $this->productRepository->findById($productId);
 
             while ($data = $result->fetch_assoc()){ 
-                $priceTable = new PriceTable();
-                $priceTable->setId($data['id']);
-                $priceTable->setCostPrice($data['costPrice']);
-                $priceTable->setUnitCost($data['unitCost']);
-                $priceTable->setVariableCost($data['variableCost']);
-                $priceTable->setFixedCost($data['fixedCost']);
-                $priceTable->setTotalCost($data['totalCost']);
-                $priceTable->setFinalPrice($data['finalPrice']);
-                $priceTable->setMarkup($data['markup']);
-                $priceTable->setProfitMargin($data['profitMargin']);
+                $product = new Product();
+                $product->setfinalPrice($data['final_Price']);
+                $product->setDescription($data['description']);
+                $product->setSize($data['size']);
             }
 
-            return $priceTable;
+            return $product;
         }
     }
 ?>

@@ -104,7 +104,7 @@ function handleProductLoad(){
 
         disabledFilds(fisldsTodisabled);
         
-    }, 10);
+    }, 2);
 }
 
 function disabledFilds(fields){
@@ -144,9 +144,26 @@ function generatebarCode(barcodeFieldValue) {
     JsBarcode('#barcode', barcodeFieldValue, settings);
 }
 
-function handlePriceChange(){
+function handleBarcodeBlur(){
 
-    
+    const form = document.getElementById('form');
+    form.submit();
+}
+
+function handleStockSubmit(action){
+
+    const codebar = document.getElementById('codebar').value;
+    const productValue = document.getElementById('product').value;
+
+    if(!codebar || !productValue) return;
+
+    document.getElementById('action').value = action;
+    return;
+}
+
+function handleStockCleanFields(){
+    document.getElementById('codebar').value = '';
+    document.getElementById('product').value = '';
 }
 
 function ajaxConnect(parameter, type, url){

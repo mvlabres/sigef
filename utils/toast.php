@@ -6,6 +6,8 @@
             'product-family-success' => ['variant'=> 'success', 'message'=> 'Registro criado com sucesso!'],
             'product-success' => ['variant'=> 'success', 'message'=> 'Produto criado com sucesso!'],
             'product-error' => ['variant'=> 'error', 'message'=> 'Erro ao criar produto!'],
+            'stock-success' => ['variant'=> 'success', 'message'=> 'Produto adicionado ao estoque com sucesso!'],
+            'stock-error' => ['variant'=> 'error', 'message'=> 'Erro ao inserir o produto no estoque!'],
             'price-table-success' => ['variant'=> 'success', 'message'=> 'tabela de preço criada com sucesso!'],
         ];
 
@@ -53,7 +55,4 @@
             </div>';
         }
     }
-
-    
-
 ?>

@@ -45,6 +45,14 @@
             return $this->RELATIONSHIP;
         }
 
+        public function findByBarcode($barcode){
+
+            $productId = $this->extractId($barcode);
+            
+            $result = $this->productRepository->findById($productId);
+            $products = $this->getResultValues($result);
+            return $products[0]; 
+        }
 
         public function create(){
 
@@ -89,6 +97,14 @@
             $this->product->setProductFamilyId($this->post['productFamily']);
             $this->product->setBarcode();
 
+        }
+
+        public function extractId($barcode){
+
+            $withoutCodes = substr($barcode, -7); 
+            $checkerDigit = substr($withoutCodes, 0, -1);  
+
+            return intval($checkerDigit);
         }
 
        

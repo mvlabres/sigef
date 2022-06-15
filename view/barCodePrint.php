@@ -1,25 +1,31 @@
 <?php
 
-    require('../controller/session.php');
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+    require_once('../controller/session.php');
     require_once('../controller/printBarcodeController.php');
 
     if($_SESSION['name'] == null){
         header('LOCATION:login.php');
     }
 
-
     $barcodeValue = '';
-    $priceId = '';
-    $priceTable = '';
+    $productId = '';
+    $product = '';
 
     $printBarcodeController = new PrintBarcodeController();
 
+    
+
     if(isset($_GET['barcode'])){
         $barcodeValue = $_GET['barcode'];
-        $priceId = $_GET['priceid'];
+        $productId = $_GET['productId'];
 
-        $priceTable = $printBarcodeController->findById($priceId);
+        $product = $printBarcodeController->findById($productId);
     }
+
 
 ?>
 
@@ -41,9 +47,13 @@
         <div class="print-container printable">
             <input id="barcodeData" value="<?php echo $barcodeValue; ?>" type="hidden" />
 
+            <div>
+                <?php echo '<div class="print-value-size slds-text-body_small">'.$product->getDescription().'</div>'; ?>
+            </div>
+
             <div class="print-label-container" >
-                <?php echo '<div class="print-value-size slds-text-heading_small">Tam. GG</div>'; ?>
-                <?php echo '<div class="print-value-price slds-text-heading_small">R$ '.$priceTable->getFinalPrice().'</div>'; ?>
+                <?php echo '<div class="print-value-size slds-text-heading_small"> Tam.: '.$product->getSize().'</div>'; ?>
+                <?php echo '<div class="print-value-price slds-text-heading_small">R$ '.$product->getFinalPrice().'</div>'; ?>
             </div>
     
             <svg id="barcode"></svg>

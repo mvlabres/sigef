@@ -144,7 +144,7 @@ error_reporting(E_ALL);
                                 <p id="feedback"></p>
                             </div>
                         </div>
-                        <?php echo "<a  href='barCodePrint.php?barcode=".$product->getBarcode()."&priceid=".$product->getPriceTableId()."' id='button-print' class='slds-button slds-button_brand'>Imprimir</a>"; ?> 
+                        <?php echo "<a  href='barCodePrint.php?barcode=".$product->getBarcode()."&productId=".$product->getId()."' id='button-print' class='slds-button slds-button_brand'>Imprimir</a>"; ?> 
                     </div>
 
                     

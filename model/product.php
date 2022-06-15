@@ -5,11 +5,13 @@ class Product{
     private $id;
     private $description;
     private $priceTable;
+    private $priceTableId;
     private $priceLabel;
     private $barcode;
     private $size;
     private $productFamilyId;
     private $productFamilyDescription;
+    private $finalPrice;
 
     private $COUNTRY_CODE = '789';
     private $BUSINESS_CODE = '356';
@@ -71,6 +73,14 @@ class Product{
 
     public function setProductFamilyId($productFamilyId){
         $this->productFamilyId = $productFamilyId;
+    }
+
+    public function getFinalPrice(){
+        return $this->finalPrice;
+    }
+
+    public function setfinalPrice($finalPrice){
+        $this->finalPrice = $finalPrice;
     }
 }
 

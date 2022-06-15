@@ -57,19 +57,15 @@ error_reporting(E_ALL);
         </div>
     </div>
 
-    <!--  usado para manter a opção como selecionada
-        
-        <li class="slds-nav-vertical__item slds-is-active menu-item">
-        <a href="#" class="slds-nav-vertical__action" aria-current="true">Produtos</a> -->
-
-
-
     <div class="body-container">
         <div class="menu">
             <nav class="slds-nav-vertical slds-nav-vertical_shade" aria-label="Sub page">
                 <div class="slds-nav-vertical__section">
                     <h2 id="entity-header" class="slds-nav-vertical__title">Cadastros</h2>
                     <ul aria-describedby="entity-header">
+                        <li class="slds-nav-vertical__item  menu-item">
+                            <a href="home.php?content=stockView.php" class="slds-nav-vertical__action">Estoque</a>
+                        </li>
                         <li class="slds-nav-vertical__item  menu-item">
                             <a href="home.php?content=productFamilyList.php" class="slds-nav-vertical__action">Família de produtos</a>
                         </li>

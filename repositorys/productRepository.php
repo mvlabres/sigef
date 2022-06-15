@@ -1,6 +1,6 @@
 <?php
 
-// require_once('../controller/connection.php');
+require_once('../controller/connection.php');
 
 class ProductRepository{
     
@@ -29,6 +29,25 @@ class ProductRepository{
             return true;
 
         }catch(Exception $e){
+            return false;
+        }
+    }
+
+    public function findById($id){
+
+        try{
+
+            $sql = "SELECT Product.id, description, priceId, size, productFamilyId, Price.finalPrice AS final_Price
+                    FROM Product
+                    INNER JOIN Price ON priceId = Price.id 
+                    WHERE Product.id =".$id;
+
+
+            $result = $this->mySqli->query($sql);
+            return $result;
+
+        }catch(Exception $e){
+            echo ' - ex';
             return false;
         }
     }
