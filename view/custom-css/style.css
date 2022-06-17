@@ -101,6 +101,11 @@ body{
     justify-content: center;
 }
 
+.full-start{
+    width: 100%;
+    justify-content:flex-start;
+}
+
 .slds-nav-vertical_shade .slds-is-active .slds-nav-vertical__action {
     border: none !important;
 }
@@ -121,11 +126,15 @@ body{
     padding: 20px;
 }
 
-.button-action{
+.button-action, .button-action-start{
     width: 100%;
     margin-top: 30px;
     display: flex;
     justify-content: end;
+}
+
+.button-action-start{
+    justify-content: start !important;
 }
 
 .label-close{
@@ -153,7 +162,6 @@ body{
 }
 
 .buttom-group{
-    background-color: orange;
     justify-content: end;
     align-items: flex-end;
     align-content: flex-end;
@@ -204,6 +212,86 @@ body{
     flex-direction: row;
 }
 
+.input-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group > div{
+    border: solid 0.5px rgb(196, 195, 195);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.input-group > div > input{
+    width: 100%;
+    border: none;
+    height: 20px;
+    font-size: 1rem;
+}
+
+.input-group > label{
+    font-weight: bolder;
+    font-size: 0.8rem;
+}
+
+.cash-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.sell-products-table{
+    height: 70%;
+}
+
+.sell-details{
+    width: 55%;
+    height: 100%;
+    border: solid rgb(216, 215, 215) 0.5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sell-actions{
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    border: solid rgb(216, 215, 215) 0.5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.table-icon{
+    max-width: 40% !important;
+    height: auto !important;
+}
+
+.products-table{
+    margin-top: 10px;
+}
+
+.sell-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 65%;
+}
+
+.sell-price-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sell-confirm{
+    margin-top: 20px;
+}
+
+.row-align-bottom{
+    align-items: flex-end;
+}
+
 @media print {
     body, .body-print {
         visibility: hidden;
@@ -211,8 +299,48 @@ body{
     .printable {
         visibility: visible;
     }
-
+    
     @page {
         margin:0;
-      }
+    }
+}
+
+.td_10{
+    width: 10%;
+}
+
+.td_20{
+    width: 20%;
+}
+
+.td_30{
+    width: 30%;
+}
+
+.td_40{
+    width: 40%;
+}
+
+.td_50{
+    width: 50%;
+}
+
+.td_60{
+    width: 60%;
+}
+
+.td_70{
+    width: 70%;
+}
+
+.td_80{
+    width: 80%;
+}
+
+.td_90{
+    width: 90%;
+}
+
+.td_100{
+    width: 100%;
 }

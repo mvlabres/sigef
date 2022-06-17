@@ -22,8 +22,8 @@ class StockRepository{
 
             if(!$this->stock) return null;
 
-            $sql = "INSERT INTO Stock(entryDate, quantity, productId) 
-                    VALUES (CURDATE(), 1, '".$this->stock->getProductId()."')";
+            $sql = "INSERT INTO Stock(entryDate, quantity, productId, productCode) 
+                    VALUES (CURDATE(), 1, '".$this->stock->getProductId()."', '".$this->stock->getProductCode()."')";
 
             $this->mySqli->query($sql);
             return true;
@@ -37,7 +37,7 @@ class StockRepository{
 
         try{
 
-            $sql = "SELECT Stock.id, entryDate, departureDate, quantity, productId, Product.description AS product
+            $sql = "SELECT Stock.id, entryDate, departureDate, quantity, productId, productCode, Product.description AS product
                     FROM Stock 
                     INNER JOIN Product ON productId = Product.id
                     ORDER BY Product.description ASC";

@@ -15,7 +15,7 @@ error_reporting(E_ALL);
     $toastContent = '';
 
     if(isset($_GET['content'])) {
-        
+
         $content = $_GET['content'];
         
         if($content == 'logout') {
@@ -74,6 +74,18 @@ error_reporting(E_ALL);
                         </li>
                         <li class="slds-nav-vertical__item  menu-item">
                             <a href="home.php?content=priceTableList.php" class="slds-nav-vertical__action">Tabela de precificação</a>
+                        </li>
+                    </ul>
+                    <h2 id="entity-header" class="slds-nav-vertical__title">Vendas</h2>
+                    <ul aria-describedby="entity-header">
+                        <li class="slds-nav-vertical__item  menu-item">
+                            <a href="home.php?content=sellView.php" class="slds-nav-vertical__action">Vender</a>
+                        </li>
+                        <li class="slds-nav-vertical__item  menu-item">
+                            <a href="home.php?content=registerView.php" class="slds-nav-vertical__action">Fluxo de caixa</a>
+                        </li>
+                        <li class="slds-nav-vertical__item  menu-item">
+                            <a href="home.php?content=feeSimulator.php" class="slds-nav-vertical__action">Simulador de taxas</a>
                         </li>
                     </ul>
                     <h2 id="entity-header" class="slds-nav-vertical__title">LogOut</h2>

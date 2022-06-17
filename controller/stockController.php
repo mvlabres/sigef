@@ -24,7 +24,9 @@
         public function create(){
 
             $this->stock->setProductId($this->post['productId']);
+            $this->stock->setProductCode($this->post['productCode']);
             $this->stockRepository->setStock($this->stock);
+
             return $this->stockRepository->create();
         }
 
@@ -48,6 +50,10 @@
             }
 
             return $stocks;
+        }
+
+        public function findByProductCode($productCode){
+            
         }
 
         // public function getLastCreated(){

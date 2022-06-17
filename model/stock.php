@@ -9,6 +9,8 @@ class Stock{
     private $quantity;
     private $productId;
     private $productDescription;
+    private $productCode;
+    private $finalPrice;
 
     public function setId($id){
         $this->id = $id;
@@ -57,6 +59,22 @@ class Stock{
     public function getProductDescription(){
         return $this->productDescription;
     }
+
+    public function setProductCode($productCode){
+        $this->productCode = $productCode;
+    }
+
+    public function getproductCode(){
+        return $this->productCode;
+    }  
+    
+    public function setFinalPrice($finalPrice){
+        $this->finalPrice = $finalPrice;
+    }
+
+    public function getFinalPrice(){
+        return $this->finalPrice;
+    }   
 }
 
 ?>

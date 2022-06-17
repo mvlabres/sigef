@@ -166,19 +166,74 @@ function handleStockCleanFields(){
     document.getElementById('product').value = '';
 }
 
+
+//vendas
+
+function handleInput(){
+    const codebar = document.getElementById('codebar').value;
+
+    if(codebar.length < 13) return;
+
+    ajaxConnect(codebar, 'post', '../controller/ajax/getStockItem.php')
+    .then(result =>{
+        if(!result) {
+            alert('Falha ao buscar o produto no estoque');
+            return;
+        }
+
+        addProduct(JSON.parse(result));
+
+    })
+}
+
+function updateValues(currentValue){
+
+    let totalValue = (!document.getElementById('totalValue').value) ? 0 : parseFloat(document.getElementById('totalValue').value);
+    totalValue = totalValue + parseFloat(currentValue);
+    document.getElementById('totalValue').value = totalValue.toFixed(2);
+}
+
+function addProduct(data){
+
+    const barcode = document.getElementById('codebar');
+
+    const table = document.getElementById('productList');
+    const numRows = table.rows.length;
+
+    const row = table.insertRow(numRows);
+    let cellNumber = row.insertCell(0);
+    let cellCode = row.insertCell(1);
+    let cellDescription = row.insertCell(2);
+    let cellQuantity = row.insertCell(3);
+    let cellValue = row.insertCell(4);
+    let cellAction = row.insertCell(5);
+
+    cellNumber.innerHTML = numRows + 1;
+    cellCode.innerHTML = data.productCode;
+    cellDescription.innerHTML = data.product;
+    cellQuantity.innerHTML = '1';
+    cellValue.innerHTML = `R$${data.final_Price}`;
+    cellAction.innerHTML = '<a href=""><img class="table-icon" src="img/icon/utility/delete_60.png"></img></a>';
+
+    barcode.value = '';
+
+    updateValues(data.final_Price);
+}
+
+
 function ajaxConnect(parameter, type, url){
 
     try {
         
-        $.ajax({
-            url: url,
-            type: type,
-            data: {data: parameter},
+         return $.ajax({
+                url: url,
+                type: type,
+                data: {data: parameter},
+        
+                success: (response) => {
+                    return response;
+                }
     
-            success: function(response) {
-                
-                console.log(response);
-            }
         }) 
 
     } catch (error) {

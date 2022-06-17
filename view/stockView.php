@@ -8,7 +8,7 @@ error_reporting(E_ALL);
     require_once('../model/product.php');
     require_once('../controller/stockController.php');
 
-    $codebar = '';
+    $productCode = '';
     $product = new Product();
     $action = 'search';
     $productController = new ProductController(null);
@@ -16,18 +16,19 @@ error_reporting(E_ALL);
 
     $stocks = $stockController->findAll();
 
-    
     if(isset($_POST['action'])){
        
         switch ($_POST['action']) {
             case 'search': {
 
-                $codebar = $_POST['codebar'];
-                $product = $productController->findByBarcode($codebar);
+                $productCode = $_POST['productCode'];
+                $product = $productController->findByBarcode($productCode);
                 break;
             }
 
             case 'save': {
+
+                echo 'enter save';
 
                 $stockController = new StockController($_POST);
 
@@ -63,8 +64,7 @@ error_reporting(E_ALL);
             </header>
         </div>
         <div class="card-body">
-            <h2 id="element-with-table-label" class="slds-text-heading_medium slds-m-bottom_xx-small">Cadastro de
-                produtos em estoque</h2>
+            <h2 id="element-with-table-label" class="slds-text-heading_medium slds-m-bottom_xx-small">Cadastro de produtos em estoque</h2>
             <form id="form" method="post" action="home.php?content=stockView.php">
                 <div class="slds-form-element">
 
@@ -72,7 +72,7 @@ error_reporting(E_ALL);
                         <div class="slds-form-element slds-size_1-of-3">
                             <label class="slds-form-element__label">Código de barras</label>
                             <div class="slds-form-element__control">
-                                <input id="codebar" name="codebar" type="text" tabindex="0" class="slds-input" value="<?php echo $codebar; ?>" onblur="handleBarcodeBlur()" required />
+                                <input id="codebar" name="productCode" type="text" tabindex="0" class="slds-input" value="<?php echo $productCode; ?>" onblur="handleBarcodeBlur()" required />
                             </div>
                         </div>
                         <div class="slds-form-element slds-size_1-of-3">
