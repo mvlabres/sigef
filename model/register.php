@@ -7,6 +7,7 @@
         private $openDate;
         private $closeDate;
         private $totalPayments;
+        private $initialValue;
         
         public function getId(){
             return $this->id;
@@ -46,6 +47,14 @@
 
         public function setTotalPayments($totalPayments){
             $this->totalPayments = $totalPayments;
+        }
+
+        public function getInitialValue(){
+            return $this->initialValue;
+        }
+
+        public function setInitialValue($initialValue){
+            $this->initialValue = $initialValue;
         }
     }
 ?>

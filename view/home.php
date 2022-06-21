@@ -37,8 +37,7 @@ error_reporting(E_ALL);
 <html>
 
 <head>
-    <link rel="stylesheet"
-        href="node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="stylesheet" href="node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
     <link rel="stylesheet" href="custom-css/style.css" />
     <script src="JS/controller.js"></script>
     <script src="JS/JsBarcode.all.min.js"></script>
@@ -64,6 +63,9 @@ error_reporting(E_ALL);
                     <h2 id="entity-header" class="slds-nav-vertical__title">Cadastros</h2>
                     <ul aria-describedby="entity-header">
                         <li class="slds-nav-vertical__item  menu-item">
+                            <a href="home.php?content=customerView.php" class="slds-nav-vertical__action">Cliente</a>
+                        </li>
+                        <li class="slds-nav-vertical__item  menu-item">
                             <a href="home.php?content=stockView.php" class="slds-nav-vertical__action">Estoque</a>
                         </li>
                         <li class="slds-nav-vertical__item  menu-item">
@@ -79,10 +81,10 @@ error_reporting(E_ALL);
                     <h2 id="entity-header" class="slds-nav-vertical__title">Vendas</h2>
                     <ul aria-describedby="entity-header">
                         <li class="slds-nav-vertical__item  menu-item">
-                            <a href="home.php?content=sellView.php" class="slds-nav-vertical__action">Vender</a>
+                            <a href="home.php?content=sellView.php" class="slds-nav-vertical__action">Venda</a>
                         </li>
                         <li class="slds-nav-vertical__item  menu-item">
-                            <a href="home.php?content=registerView.php" class="slds-nav-vertical__action">Fluxo de caixa</a>
+                            <a href="home.php?content=registerView.php" class="slds-nav-vertical__action">caixa</a>
                         </li>
                         <li class="slds-nav-vertical__item  menu-item">
                             <a href="home.php?content=feeSimulator.php" class="slds-nav-vertical__action">Simulador de taxas</a>

@@ -9,6 +9,12 @@
             'stock-success' => ['variant'=> 'success', 'message'=> 'Produto adicionado ao estoque com sucesso!'],
             'stock-error' => ['variant'=> 'error', 'message'=> 'Erro ao inserir o produto no estoque!'],
             'price-table-success' => ['variant'=> 'success', 'message'=> 'tabela de preço criada com sucesso!'],
+            'register-error' => ['variant'=> 'error', 'message'=> 'Erro ao abrir o caixa!'],
+            'customer-error' => ['variant'=> 'error', 'message'=> 'Erro ao cadastrar cliente!'],
+            'customer-success' => ['variant'=> 'success', 'message'=> 'Cliente cadastrado com sucesso!'],
+            'has-open-register'=> ['variant'=> 'error', 'message'=> 'Existe um caixa aberto anterior ao dia de hoje. Por favor feche-o e abra um novo caixa!'],
+            'register-success' => ['variant'=> 'success', 'message'=> 'Caixa fechado com sucesso!'],
+            'register-error' => ['variant'=> 'error', 'message'=> 'Erro ao fechar o caixa!'],
         ];
 
         public function showToast($toastType){

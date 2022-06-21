@@ -83,8 +83,8 @@
 
                 array_push($products, $product);
 
-                return $products;
             }
+            return $products;
 
         }
 

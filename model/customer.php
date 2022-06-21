@@ -5,6 +5,7 @@
         private $id;
         private $name;
         private $cpf;
+        private $tel;
 
         public function getId(){
             return $this->id;
@@ -28,6 +29,14 @@
 
         public function setCpf($cpf){
             $this->cpf = $cpf;
+        }
+
+        public function getTel(){
+            return $this->tel;
+        }
+
+        public function setTel($tel){
+            $this->tel = $tel;
         }
     }
 ?>

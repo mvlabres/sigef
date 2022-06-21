@@ -1,3 +1,10 @@
+const TEL_MASK_OPTIONS = {
+    mask: '(00)00000-0000'
+};
+
+const CPF_MASK_OPTIONS = {
+    mask: '(00)00000-0000'
+};
 
 setTimeout(() => {
 
@@ -19,7 +26,7 @@ function closeToastTimer(){
 
     setTimeout(() => {
         document.getElementById('close-toast').style.display = 'none';
-    }, 5000);
+    }, 7000);
 }
 
 function handleCurrencyBlur(event){
@@ -213,13 +220,52 @@ function addProduct(data){
     cellDescription.innerHTML = data.product;
     cellQuantity.innerHTML = '1';
     cellValue.innerHTML = `R$${data.final_Price}`;
-    cellAction.innerHTML = '<a href=""><img class="table-icon" src="img/icon/utility/delete_60.png"></img></a>';
+    cellAction.innerHTML = '<a onclick="removeProductRow(this,'+ data.final_Price +')"><img class="table-icon" src="img/icon/utility/delete_60.png"></img></a>';
 
     barcode.value = '';
 
     updateValues(data.final_Price);
 }
 
+function removeProductRow(element, finalPrice){
+
+    const totalValue = parseFloat(document.getElementById('totalValue').value);// = totalValue.toFixed(2);
+
+
+    document.getElementById('totalValue').value = (totalValue - parseFloat(finalPrice)).toFixed(2);
+
+    const tr = element.parentNode.parentNode;
+    document.getElementById('productList').deleteRow(tr.rowIndex);
+
+    calculateChangeMoney();
+}
+
+function calculateChangeMoney(){
+
+    document.getElementById('changeMoney').value = null;
+
+    const totalValue = parseFloat(document.getElementById('totalValue').value);
+
+    if(!totalValue) return;
+
+    const receipt = parseFloat(document.getElementById('receiptValue').value);
+
+    if(receipt < totalValue) return;
+
+    document.getElementById('changeMoney').value = parseFloat(receipt - totalValue).toFixed(2);
+}
+
+function handlePaymentTypeChange(){
+
+    const installmentNumber = document.getElementById('installmentNumber');
+    const paymentType = document.getElementById('paymentType').value;
+
+    if(paymentType !== 'credito') {
+        installmentNumber.disabled = true;
+        return;
+    }
+    installmentNumber.disabled = false
+}
 
 function ajaxConnect(parameter, type, url){
 
@@ -239,5 +285,45 @@ function ajaxConnect(parameter, type, url){
     } catch (error) {
         console.log(error);   
     }
+}
+
+function applyMask(element){
+
+    switch (element.name) {
+        case 'tel': {
+            element.value = phoneMask(element.value);
+            break;
+        }
+
+        case 'cpf': {
+            element.value = CPFMask(element.value);
+            break;
+        }
+    }
+}
+
+function CPFMask(value) {
+    let x = value.replace(/\D+/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/);
+    return !x[2] ? x[1] : `${x[1]}.${x[2]}` + (x[3] ? `.${x[3]}`+(x[4] ? `-${x[4]}`:''):``);   
+}
+
+function phoneMask(value, withoutCaracters) {
+
+    let x = '';
+    value = (withoutCaracters) ? insertCaracters(value) : value;
+    x = value.replace(/\D+/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,4})/);
+
+    if( value.length > 13 )
+        x = value.replace(/\D+/g, '').match(/(\d{0,2})(\d{0,4})(\d{0,4})/);
+    
+    if( value.length > 14 )
+        x = value.replace(/\D+/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+
+    return !x[2] ? x[1] : `(${x[1]}) ${x[2]}` + (x[3] ? `-${x[3]}` : ``);
+}
+
+function insertCaracters(value){
+    const x = value.replace(/\D+/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+    return !x[2] ? x[1] : `(${x[1]}) ${x[2]}` + (x[3] ? `-${x[3]}` : ``);
 }
 
