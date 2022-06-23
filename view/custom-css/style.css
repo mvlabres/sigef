@@ -276,7 +276,7 @@ body{
     width: 100%;
     display: flex;
     flex-direction: row;
-    height: 70%;
+    height: 75%;
 }
 
 .sell-price-details{
@@ -298,6 +298,14 @@ body{
 }
 
 .get-customer{
+    margin-left: 10px;
+}
+
+.discount-field{
+    display: flex;
+}
+
+.discount-field div + div{
     margin-left: 10px;
 }
 

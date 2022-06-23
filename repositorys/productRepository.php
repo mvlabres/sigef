@@ -37,17 +37,15 @@ class ProductRepository{
 
         try{
 
-            $sql = "SELECT Product.id, description, priceId, size, productFamilyId, Price.finalPrice AS final_Price
+            $sql = "SELECT Product.id, description, priceId, size, productFamilyId, Price.finalPrice AS final_Price, Price.fixedCost AS fixed_cost, Price.variableCost AS variable_cost, Price.unitCost AS unit_cost, Price.costPrice AS cost_price, Price.markup AS price_markup
                     FROM Product
                     INNER JOIN Price ON priceId = Price.id 
                     WHERE Product.id =".$id;
-
 
             $result = $this->mySqli->query($sql);
             return $result;
 
         }catch(Exception $e){
-            echo ' - ex';
             return false;
         }
     }

@@ -1,20 +1,28 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
     require_once('../controller/registerController.php');
     require_once('../controller/customerController.php');
-    require_once('../controller/customerController.php');
+    require_once('../controller/purchaseController.php');
     include_once('../model/customer.php');
 
     $registerController = new RegisterController(null);
     $customerController = new CustomerController(null);
+    $purchaseController = new PurchaseController(null);
     $register = '';
     $customer = new Customer();
+    $showRegisterCustomerFunction = false;
+    $customerValue = null;
 
-    $register = $registerController->findCurrentOpen();
+    
+    if(isset($_POST['products'])){
+
+        $purchaseController = new PurchaseController($_POST);
+        if($purchaseController->create()){
+            header('Location: home.php?content=sellView.php&messageType=purchase-success'); 
+        }else{
+            header('Location: home.php?content=sellView.php&messageType=purchase-error'); 
+        }
+    }
 
     if(isset($_POST['open-register'])){
         
@@ -23,15 +31,25 @@ error_reporting(E_ALL);
         if(!$register) header('Location: home.php?content=sellView.php&messageType=register-error');     
     }
 
+    if(isset($_GET['customer-id'])){
+
+        $customerId = $_GET['customer-id'];
+        $customer = $customerController->findById($customerId);
+    }
+
     if(isset($_POST['get-customer'])){
 
         $cpf = $_POST['cpf'];
         $customer = $customerController->findByCpf($cpf);
+        $customerId = $customer->getId();
 
         if(!$customer->getId()) {
+            $showRegisterCustomerFunction = true;
             echo '<script> alert("Cliente não cadastrado");</script>';
         }
     }
+
+    $register = $registerController->findCurrentOpen();
 ?>
 
 
@@ -40,6 +58,7 @@ error_reporting(E_ALL);
 <body>
     <article class="slds-card">
         <div class="slds-card__header slds-grid">
+            
             <header class="slds-media slds-media_center slds-has-flexi-truncate">
                 <div class="slds-media__figure">
                     <span class="slds-icon_container slds-icon-standard-account">
@@ -82,14 +101,16 @@ error_reporting(E_ALL);
                                 <div class="slds-grid">
                                     <div class="slds-form-element slds-size_1-of-4">
                                         <label class="slds-form-element__label">CPF cliente</label>
-                                        <div class="slds-form-element__control">
-                                            <input id="cpf" name="cpf" type="text" tabindex="0" class="slds-input" value="" onkeyup="applyMask(this)" required/>
+                                        <div class="slds-form-element__control">';
+                                            if( $customer->getCpf() != null ) $customerValue = $customer->getCpf();
+                                        echo '<input id="cpf" name="cpf" type="text" tabindex="0" class="slds-input" value="'.$customerValue.'" onkeyup="applyMask(this)" required/>
                                         </div>
                                     </div>
                                     <div class="slds-col slds-align-bottom">
                                         <input type="hidden" name="get-customer" /> 
-                                        <button class="slds-button slds-button_brand get-customer" type="submit">buscar</button>
-                                    </div>
+                                        <button class="slds-button slds-button_brand get-customer" type="submit">buscar</button>';
+                                        if($showRegisterCustomerFunction) echo'<a href="home.php?content=customerView.php&from=sell-customer" class="slds-button slds-button_brand get-customer" type="submit">Cadastrar</a>';
+                              echo '</div>
                                     <div class="slds-col slds-align-bottom">
                                         <div class="slds-text-body_small">' .$customer->getName().'</div>
                                     </div>
@@ -104,6 +125,10 @@ error_reporting(E_ALL);
                         </div>
                     </div>
                 </div>
+                <form id="order" action="#" method="post">
+                
+                <input type="hidden" name="registerId" value="'.$register->getId().'" />
+                <input type="hidden" name="customerId" value="'.$customerId.'" /> 
                 <table id="productList" name="productList" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered products-table">
                     <thead>
                         <tr class="slds-line-height_reset">
@@ -141,6 +166,21 @@ error_reporting(E_ALL);
                             </div>
                         </div>
 
+                        <div class="slds-form-element slds-size_1-of-1 discount-field">
+                            <div class="slds-form-element slds-size_1-of-4 input-group">
+                                <label class="slds-form-element__label">Desconto</label>
+                                <div>
+                                    <input id="discount" name="discount" type="text" tabindex="0" value="" onblur="handleBarcodeBlur()" readonly />
+                                </div>
+                            </div>
+                            <div class="slds-form-element slds-size_2-of-4 input-group">
+                                <label class="slds-form-element__label">Valor final</label>
+                                <div>
+                                    <input id="finalValue" name="finalValue" type="text" tabindex="0" value="" onblur="handleBarcodeBlur()" readonly />
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="slds-form-element slds-size_1-of-1">
                             <div class="slds-form-element slds-size_1-of-2 input-group">
                                 <label class="slds-form-element__label">Total recebido</label>
@@ -170,7 +210,7 @@ error_reporting(E_ALL);
                                         <option value="credito">Crédito</option>
                                         <option value="debito">Débito</option>
                                         <option value="dinheiro">Dinheiro</option>
-                                        <option value="px">Pix</option>
+                                        <option value="pix">Pix</option>
                                     </select>
                                 </div>
                             </div>
@@ -181,7 +221,7 @@ error_reporting(E_ALL);
                                 <label class="slds-form-element__label" for="productFamily">N° de parcelas</label>
                                 <div class="slds-form-element__control">
                                     <div class="slds-select_container">
-                                        <select value="" id="installmentNumber" name="installmentNumber" class="slds-select" id="productFamily" disabled="true">
+                                        <select id="installmentNumber" name="installmentNumber" class="slds-select" id="productFamily" disabled="true">
                                             <option value="">Selecione uma opção</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -203,10 +243,17 @@ error_reporting(E_ALL);
                             <div class="slds-form-element">
                                 <div class="slds-form-element__control">
                                     <div class="slds-checkbox">
-                                        <input type="checkbox" name="options" id="checkbox-unique-id-80" value="checkbox-unique-id-80" />
-                                        <label class="slds-checkbox__label" for="checkbox-unique-id-80">
+                                        <input type="checkbox" name="withInvoice" id="withInvoice" value="withInvoice" />
+                                        <label class="slds-checkbox__label" for="withInvoice">
                                             <span class="slds-checkbox_faux"></span>
                                             <span class="slds-form-element__label">Nota Fiscal</span>
+                                        </label>
+                                    </div>
+                                    <div class="slds-checkbox">
+                                        <input type="checkbox" name="applyDiscount" id="applyDiscount" value="applyDiscount" onchange="handleDiscountChange(this)" />
+                                        <label class="slds-checkbox__label" for="applyDiscount">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-form-element__label">Aplicar desconto</span>
                                         </label>
                                     </div>
                                 </div>
@@ -221,10 +268,10 @@ error_reporting(E_ALL);
         <footer class="slds-card__footer">
             <div class="slds-form-element">
                 <button class="slds-button slds-button_neutral">Limpar</button>
-                <button class="slds-button slds-button_brand" type="submit">Salvar</button>
-                <button class="slds-button slds-button_brand" type="submit">Fechar Pedido</button>
+                <button class="slds-button slds-button_brand" type="submit" onclick="handleCloseOrder()">Fechar Pedido</button>
             </div>
         </footer>
+        </form>
     </div>
 </article> ';
 }

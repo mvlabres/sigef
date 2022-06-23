@@ -15,6 +15,8 @@
             'has-open-register'=> ['variant'=> 'error', 'message'=> 'Existe um caixa aberto anterior ao dia de hoje. Por favor feche-o e abra um novo caixa!'],
             'register-success' => ['variant'=> 'success', 'message'=> 'Caixa fechado com sucesso!'],
             'register-error' => ['variant'=> 'error', 'message'=> 'Erro ao fechar o caixa!'],
+            'purchase-success' => ['variant'=> 'success', 'message'=> 'Pedido fechado com sucesso!'],
+            'purchase-error' => ['variant'=> 'error', 'message'=> 'Erro ao fechar o pedido!'],
         ];
 
         public function showToast($toastType){

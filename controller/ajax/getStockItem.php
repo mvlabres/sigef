@@ -19,7 +19,7 @@
                     FROM Stock 
                     INNER JOIN Product ON productId = Product.id
                     INNER JOIN Price ON priceID = Price.id
-                    WHERE productCode = ".$productCode;
+                    WHERE productCode = '".$productCode."' AND quantity > 0";
 
             $result = $conn->mySqli->query($sql);
             return $result;

@@ -1,13 +1,15 @@
 <?php
 
 if( $_SERVER['REQUEST_METHOD'] =='POST' ){
-    $request = md5( implode( $_POST ) );
+    try {
+        $request = md5(implode( $_POST ) );
     
-    if( isset( $_SESSION['last_request'] ) && $_SESSION['last_request']== $request ){
-        echo 'refresh';
-    }
-    else{
-        $_SESSION['last_request'] = $request;
+        if( isset( $_SESSION['last_request'] ) && $_SESSION['last_request']== $request ){
+            echo 'refresh';
+        }else{
+            $_SESSION['last_request'] = $request;
+        }
+    } catch (Exception $ex) {
 
     }
 }

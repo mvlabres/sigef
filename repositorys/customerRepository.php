@@ -26,7 +26,7 @@ class CustomerRepository{
                     VALUES ('".$this->customer->getName()."', '".$this->customer->getTel()."', '".$this->customer->getCpf()."')";
 
             $this->mySqli->query($sql);
-            return true;
+            return $this->mySqli->insert_id;
 
         }catch(Exception $e){
             return false;
@@ -40,6 +40,22 @@ class CustomerRepository{
             $sql = "SELECT id, name, tel, cpf
                     FROM Customer 
                     WHERE cpf = '".$cpf."'";
+
+            $result = $this->mySqli->query($sql);
+            return $result;
+
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    public function findById($id){
+
+        try{
+
+            $sql = "SELECT id, name, tel, cpf
+                    FROM Customer 
+                    WHERE id = '".$id."'";
 
             $result = $this->mySqli->query($sql);
             return $result;

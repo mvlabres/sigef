@@ -3,21 +3,32 @@
 
     require('../controller/customerController.php');
     
+    $goToSell = false;
+    if(isset($_GET['from'])) $goToSell = true;
+
     if(isset($_POST['action'])) {
 
         $customerController;
 
         $action = $_POST['action'];
+
         
         if($action == 'save') {
             
             $customerController = new CustomerController($_POST);
-            $result = $customerController->create();
+            $customerId = $customerController->create();
 
-            if($result){
-                header('Location: home.php?content=customerView.php&messageType=customer-success');
+
+            if($customerId){
+
+                if($goToSell) header('Location: home.php?content=sellView.php&customer-id='.$customerId.'&messageType=customer-success');
+
+                else header('Location: home.php?content=customerView.php&messageType=customer-success');
             }else {
-                header('Location: home.php?content=customerView.php&messageType=customer-error');
+
+                if($goToSell) header('Location: home.php?content=sellView.php&messageType=customer-error');
+
+                else header('Location: home.php?content=customerView.php&messageType=customer-error');
             }
         }
     }

@@ -35,6 +35,15 @@ class CustomerController{
         else return new Customer();
     }
 
+    public function findById($id){
+
+        $result = $this->customerRepository->findById($id);
+        $customers = $this->getResultValues($result);
+
+        if(count($customers) > 0) return $customers[0];
+        else return new Customer();
+    }
+
     public function create(){
 
         $this->customer->setName($this->post['name']);

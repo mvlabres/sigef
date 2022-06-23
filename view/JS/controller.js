@@ -6,6 +6,8 @@ const CPF_MASK_OPTIONS = {
     mask: '(00)00000-0000'
 };
 
+const DISCOUNT = 5;
+
 setTimeout(() => {
 
     const currencyInputs = document.querySelectorAll('input[type="currency"]');
@@ -184,7 +186,7 @@ function handleInput(){
     ajaxConnect(codebar, 'post', '../controller/ajax/getStockItem.php')
     .then(result =>{
         if(!result) {
-            alert('Falha ao buscar o produto no estoque');
+            alert('Erro ao buscar produto');
             return;
         }
 
@@ -198,22 +200,32 @@ function updateValues(currentValue){
     let totalValue = (!document.getElementById('totalValue').value) ? 0 : parseFloat(document.getElementById('totalValue').value);
     totalValue = totalValue + parseFloat(currentValue);
     document.getElementById('totalValue').value = totalValue.toFixed(2);
+    document.getElementById('finalValue').value = totalValue.toFixed(2);
 }
 
 function addProduct(data){
 
     const barcode = document.getElementById('codebar');
+    
+    if(!data){
+        alert('Este produto não existe no estoque. Favor lançar o produto');
+        barcode.value = '';
+        return;
+    }
+
 
     const table = document.getElementById('productList');
     const numRows = table.rows.length;
 
     const row = table.insertRow(numRows);
+
     let cellNumber = row.insertCell(0);
     let cellCode = row.insertCell(1);
     let cellDescription = row.insertCell(2);
     let cellQuantity = row.insertCell(3);
     let cellValue = row.insertCell(4);
     let cellAction = row.insertCell(5);
+    let cellId = row.insertCell(6);
 
     cellNumber.innerHTML = numRows + 1;
     cellCode.innerHTML = data.productCode;
@@ -221,6 +233,8 @@ function addProduct(data){
     cellQuantity.innerHTML = '1';
     cellValue.innerHTML = `R$${data.final_Price}`;
     cellAction.innerHTML = '<a onclick="removeProductRow(this,'+ data.final_Price +')"><img class="table-icon" src="img/icon/utility/delete_60.png"></img></a>';
+    cellId.innerHTML = '<input type="hidden" name="products[]" value="'+ data.productId +'" />';
+    cellId.style.visibility = 'collapse';
 
     barcode.value = '';
 
@@ -233,6 +247,7 @@ function removeProductRow(element, finalPrice){
 
 
     document.getElementById('totalValue').value = (totalValue - parseFloat(finalPrice)).toFixed(2);
+    document.getElementById('finalValue').value = (totalValue - parseFloat(finalPrice)).toFixed(2);
 
     const tr = element.parentNode.parentNode;
     document.getElementById('productList').deleteRow(tr.rowIndex);
@@ -244,15 +259,15 @@ function calculateChangeMoney(){
 
     document.getElementById('changeMoney').value = null;
 
-    const totalValue = parseFloat(document.getElementById('totalValue').value);
+    const finalValue = parseFloat(document.getElementById('finalValue').value);
 
-    if(!totalValue) return;
+    if(!finalValue) return;
 
     const receipt = parseFloat(document.getElementById('receiptValue').value);
 
-    if(receipt < totalValue) return;
+    if(receipt < finalValue) return;
 
-    document.getElementById('changeMoney').value = parseFloat(receipt - totalValue).toFixed(2);
+    document.getElementById('changeMoney').value = parseFloat(receipt - finalValue).toFixed(2);
 }
 
 function handlePaymentTypeChange(){
@@ -262,9 +277,41 @@ function handlePaymentTypeChange(){
 
     if(paymentType !== 'credito') {
         installmentNumber.disabled = true;
+        installmentNumber.required = false;
         return;
     }
-    installmentNumber.disabled = false
+    installmentNumber.disabled = false;
+    installmentNumber.required = true;
+}
+
+function handleDiscountChange(element){
+
+    const totalValue = parseFloat(document.getElementById('totalValue').value);
+
+    if(!totalValue) return; 
+
+    if(!element.checked){
+
+        document.getElementById('finalValue').value = totalValue;
+
+        document.getElementById('discount').value = parseFloat(0); 
+        return;
+    }
+
+    const discountValue = (totalValue/100) * DISCOUNT;
+
+    document.getElementById('discount').value = discountValue; 
+    
+    document.getElementById('finalValue').value = totalValue - discountValue;
+}
+
+function handleCloseOrder(){
+
+    const finalValue = document.getElementById('finalValue').value;
+
+    if(!finalValue) alert('Não há produtos');
+
+    return;
 }
 
 function ajaxConnect(parameter, type, url){
