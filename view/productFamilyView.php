@@ -6,7 +6,6 @@
 
         $productFamilyController;
         
-        print_r($_POST);
         $action = $_POST['action'];
         
         if($action == 'save') {
