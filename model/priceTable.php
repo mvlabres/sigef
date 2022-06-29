@@ -13,6 +13,7 @@
         private $profitMargin;
         private $profit;
         private $priceLabel;
+        private $calculatedPrice;
 
         public function setId($id){
             $this->id = $id;
@@ -100,6 +101,14 @@
 
         public function getPriceLabel(){
             return $this->priceLabel;
+        }
+
+        public function setCalculatedPrice($calculatedPrice){
+            $this->calculatedPrice = floatval($calculatedPrice);
+        }
+
+        public function getCalculatedPrice(){
+            return $this->calculatedPrice;
         }
     }
 ?>

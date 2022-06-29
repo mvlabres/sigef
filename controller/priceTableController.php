@@ -82,7 +82,9 @@
 
             $this->priceTable->setTotalCost( $totalCost );
 
-            $this->priceTable->setFinalPrice( $this->priceTable->getCostPrice() * ( $this->priceTable->getMarkup() / 100 ));
+            $this->priceTable->setCalculatedPrice( $this->priceTable->getCostPrice() * ( $this->priceTable->getMarkup() / 100 ));
+
+            $this->priceTable->setFinalPrice( ( ceil( $this->priceTable->getCalculatedPrice() /5) * 5 ) - 0.01);
 
             $this->priceTable->setProfitMargin( floatval(($this->priceTable->getTotalCost() / $this->priceTable->getFinalPrice()) * 100));
 

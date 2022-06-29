@@ -21,6 +21,16 @@
             if(!$post) return;
             $this->post = $post;
         }
+
+        public function findById($id){
+            
+            $result = $this->registerRepository->findById($id);
+
+            $registers =  $this->getResultValues($result);
+
+            if(count($registers) > 0) return $registers[0];
+            else return null;
+        }
         
         public function findCurrentOpen(){
 
@@ -85,6 +95,7 @@
                 $register->setOpenDate($data['openDate']);
                 $register->setCloseDate($data['closeDate']);
                 $register->setTotalPayments($data['totalPayments']); 
+                $register->setInitialValue($data['initialValue']); 
 
                 array_push($registers, $register);
             }

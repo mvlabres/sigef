@@ -43,7 +43,7 @@
         </div>
         <div class="card-body">
             <h2 id="element-with-table-label" class="slds-text-heading_medium slds-m-bottom_xx-small">Cadastro de família de produtos</h2>
-            <form method="post" action="#">
+            <form method="post" action="home.php?content=productFamilyView.php">
                 <div class="slds-form-element">
                     <label class="slds-form-element__label" for="form-element-01">Descrição</label>
                     <div class="slds-form-element__control">

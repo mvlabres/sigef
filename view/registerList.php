@@ -73,7 +73,7 @@
 
 
                             if( $register->getStatus() == "open"){
-                                echo '<td scope="row"><div class="slds-truncate"><a href="home.php?content=registerView.php&id='. $register->getId() .'" class="slds-button slds-button_brand">Fechar caixa</a></div></td>';    
+                                echo '<td scope="row"><div class="slds-truncate"><a href="home.php?content=registerResume.php&id='. $register->getId() .'" class="slds-button slds-button_brand">Fechar caixa</a></div></td>';    
                             } 
                             echo '</tr>';
                         }

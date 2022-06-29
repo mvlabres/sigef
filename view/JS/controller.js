@@ -8,6 +8,8 @@ const CPF_MASK_OPTIONS = {
 
 const DISCOUNT = 5;
 
+const TEXT_CONFIRMATION = 'fechar';
+
 setTimeout(() => {
 
     const currencyInputs = document.querySelectorAll('input[type="currency"]');
@@ -226,15 +228,18 @@ function addProduct(data){
     let cellValue = row.insertCell(4);
     let cellAction = row.insertCell(5);
     let cellId = row.insertCell(6);
+    let cellProductCode = row.insertCell(7);
 
-    cellNumber.innerHTML = numRows + 1;
+    cellNumber.innerHTML = (numRows === 0) ?  1 : numRows + 1;
     cellCode.innerHTML = data.productCode;
     cellDescription.innerHTML = data.product;
     cellQuantity.innerHTML = '1';
     cellValue.innerHTML = `R$${data.final_Price}`;
     cellAction.innerHTML = '<a onclick="removeProductRow(this,'+ data.final_Price +')"><img class="table-icon" src="img/icon/utility/delete_60.png"></img></a>';
     cellId.innerHTML = '<input type="hidden" name="products[]" value="'+ data.productId +'" />';
+    cellProductCode.innerHTML = '<input type="hidden" name="productCodes[]" value="'+ data.productCode +'" />';
     cellId.style.visibility = 'collapse';
+    cellProductCode.style.visibility = 'collapse';
 
     barcode.value = '';
 
@@ -292,17 +297,17 @@ function handleDiscountChange(element){
 
     if(!element.checked){
 
-        document.getElementById('finalValue').value = totalValue;
+        document.getElementById('finalValue').value = totalValue.toFixed(2);
 
-        document.getElementById('discount').value = parseFloat(0); 
+        document.getElementById('discount').value = null; 
         return;
     }
 
     const discountValue = (totalValue/100) * DISCOUNT;
 
-    document.getElementById('discount').value = discountValue; 
+    document.getElementById('discount').value = discountValue.toFixed(2); 
     
-    document.getElementById('finalValue').value = totalValue - discountValue;
+    document.getElementById('finalValue').value = (totalValue - discountValue).toFixed(2);
 }
 
 function handleCloseOrder(){
@@ -312,6 +317,19 @@ function handleCloseOrder(){
     if(!finalValue) alert('Não há produtos');
 
     return;
+}
+
+function handleConfirmationKeyup(){
+
+    const CONFIRMATION = document.getElementById('confirmation').value;
+    const CLOSE_REGISTER_ACTION = document.getElementById('close-register-button');
+
+    if(CONFIRMATION !== TEXT_CONFIRMATION){
+        CLOSE_REGISTER_ACTION.disabled = true;
+        return;
+    }
+
+    CLOSE_REGISTER_ACTION.disabled = false;
 }
 
 function ajaxConnect(parameter, type, url){
@@ -332,6 +350,23 @@ function ajaxConnect(parameter, type, url){
     } catch (error) {
         console.log(error);   
     }
+}
+
+function handleFeeCalculator(){
+
+    const rows = [... document.getElementById('cardFeeTable').rows];
+    const fees = document.getElementsByName('fee[]');
+    const paymentsValue = document.getElementsByName('paymentValue[]');
+    const value = parseFloat(document.getElementById('payment').value);
+
+    rows.forEach((row, index) => {
+
+        if(rows.length - 1 === index) return;
+        
+        const fee = parseFloat(fees[index].innerHTML);
+        const paymentValue = value + ((value/100)*fee);
+        paymentsValue[index].innerHTML = paymentValue.toFixed(2);
+    });
 }
 
 function applyMask(element){

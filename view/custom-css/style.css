@@ -309,6 +309,21 @@ body{
     margin-left: 10px;
 }
 
+.register-values{
+    border: 0.5px solid rgb(211, 210, 210);
+    padding: 10px;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.register-values + div{
+    margin-top: 10px;
+}
+
+#error-message{
+    display: none;
+}
+
 @media print {
     body, .body-print {
         visibility: hidden;

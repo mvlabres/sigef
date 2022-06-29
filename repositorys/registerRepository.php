@@ -33,6 +33,22 @@
             }
         }
 
+        public function findById($id){
+
+            try{
+    
+                $sql = "SELECT id, status, totalPayments, openDate, closeDate, initialValue
+                        FROM Register 
+                        WHERE id = ".$id;
+    
+                $result = $this->mySqli->query($sql);
+                return $result;
+    
+            }catch(Exception $e){
+                return false;
+            }
+        }
+
         public function findAll(){
 
             try{

@@ -75,7 +75,7 @@
                 <?php if(!$register){
                 echo ' 
                 <div class="slds-no-flex">
-                    <form method="post" action="#">
+                    <form method="post" action="home.php?content=sellView.php">
                         <input type="hidden" name="open-register" value="open-register" />
                         <button type="submit" class="slds-button slds-button_brand">Abrir Caixa</button>
                     </form>
@@ -97,7 +97,7 @@
                 <div class="slds-grid">
                     <div class="full-start">
                         <div class="slds-col">
-                            <form method="post" action="#">
+                            <form method="post" action="home.php?content=sellView.php">
                                 <div class="slds-grid">
                                     <div class="slds-form-element slds-size_1-of-4">
                                         <label class="slds-form-element__label">CPF cliente</label>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <form id="order" action="#" method="post">
+                <form id="order" action="home.php?content=sellView.php" method="post">
                 
                 <input type="hidden" name="registerId" value="'.$register->getId().'" />
                 <input type="hidden" name="customerId" value="'.$customerId.'" /> 

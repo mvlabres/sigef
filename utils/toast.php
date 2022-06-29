@@ -17,6 +17,7 @@
             'register-error' => ['variant'=> 'error', 'message'=> 'Erro ao fechar o caixa!'],
             'purchase-success' => ['variant'=> 'success', 'message'=> 'Pedido fechado com sucesso!'],
             'purchase-error' => ['variant'=> 'error', 'message'=> 'Erro ao fechar o pedido!'],
+            'simulator-error' => ['variant'=> 'error', 'message'=> 'Erro ao buscar as taxas']
         ];
 
         public function showToast($toastType){

@@ -58,7 +58,7 @@
         <div class="card-body">
             <h2 id="element-with-table-label" class="slds-text-heading_medium slds-m-bottom_xx-small">Cadastro de
                 produtos</h2>
-            <form method="post" action="#">
+            <form method="post" action="home.php?content=productView.php">
                 <div class="slds-form-element">
                     <div class="slds-form-element">
                         <label class="slds-form-element__label">Descrição</label>

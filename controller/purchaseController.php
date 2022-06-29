@@ -1,23 +1,32 @@
 <?php
 
     include_once('../repositorys/purchaseRepository.php');
+    include_once('registerController.php');
     include_once('../model/purchase.php');
     include_once('../model/purchaseProduct.php');
     include_once('../repositorys/productRepository.php');
+    include_once('stockController.php');
+    include_once('../model/registerResume.php');
 
     class PurchaseController{
 
         private $purchase;
+        private $registerResume;
         private $purchaseProduct;
         private $post;
         private $purchaseRepository;
         private $productRepository;
+        private $stockController;
+        private $registerController;
 
         public function init(){
             $this->purchase = new Purchase();
+            $this->registerResume = new RegisterResume();
             $this->purchaseProduct = new PurchaseProduct();
             $this->purchaseRepository = new PurchaseRepository();
             $this->productRepository = new ProductRepository();
+            $this->stockController = new StockController(null);
+            $this->registerController = new RegisterController(null);
         }
 
         public function __construct($post){
@@ -41,8 +50,8 @@
                     throw new Exception();
                 }
 
-                return $this->createProducts($id); 
-
+                return $this->createProducts($id);
+                
                
             } catch (Exception $ex) {
                 return false;
@@ -52,8 +61,9 @@
         public function createProducts($purchaseId){
 
             $productids = $this->post['products'];
+            $productCodes = $this->post['productCodes'];
 
-            foreach ($productids as $productid) {
+            foreach ($productids as $key => $productid) {
                 
                 $result = $this->productRepository->findById($productid);
 
@@ -77,9 +87,17 @@
                 $this->purchaseRepository->setPurchaseProduct($this->purchaseProduct);
                 $result = $this->purchaseRepository->createProduct();
 
-                if(!$result){
+                if($result){
+                    
+                    if(!$this->stockController->writeOffProduct($productCodes[$key])){
+                        echo '<script>alert("Erro ao baixar o produto id '.$productid.' no estoque")</script>';
+                        throw new Exception();
+                    }
+                    
+                } else {
                     echo '<script>alert("Erro ao incluir o produto id '.$productid.' no pedido")</script>';
                     throw new Exception();
+                    
                 }
             }
 
@@ -87,6 +105,7 @@
         }
 
         public function setPostFields(){
+            $this->purchase = new Purchase();
             $this->purchase->setCustomerId($this->post['customerId']);
             $this->purchase->setTotalValue($this->post['totalValue']);
             $this->purchase->setDiscount($this->post['discount']);
@@ -97,22 +116,90 @@
             $this->purchase->setPaymentType($this->post['paymentType']);
         }
 
-        // public function getResultValues($result){
+        public function findPurchaseResumeByRegisterId($registerId){
 
-        //     $stocks = array();
+            $result = $this->purchaseRepository->findByRegisterId($registerId);
 
-        //     while ($data = $result->fetch_assoc()){ 
-        //         $stock = new Product();
-        //         $stock->setId($data['id']);
-        //         $stock->setStatus($data['status']);
-        //         $stock->setOpenDate($data['totalPayments']);
-        //         $stock->setCloseDate($data['openDate']);
-        //         $stock->setTotalPayments($data['closeDate']); 
+            $purchases = $this->setPurchaseFields($result);
 
-        //         array_push($stocks, $stock);
-        //     }
+            $purchaseQuantity = count($purchases);
+            $purchaseCreditTotalValue = 0;
+            $purchaseDebitTotalValue = 0;
+            $purchasePixTotalValue = 0;
+            $purchaseCashTotalValue = 0;
+            $registerInitialValue = 0;
+            $totalValue = 0;
 
-        //     return $stocks;
-        // }
+            foreach ($purchases as $purchase) {
+
+                switch ($purchase->getPaymentType()) {
+
+                    case "credito":{
+                        $purchaseCreditTotalValue +=  $purchase->getFinalValue();
+                        break;
+                    }
+
+                    case "debito":{
+                        $purchaseDebitTotalValue += $purchase->getFinalValue();
+                        break;
+                    }
+
+                    case "dinheiro":{
+                        $purchaseCashTotalValue +=  $purchase->getFinalValue();
+                        break;
+                    }
+
+                    case "pix":{
+                        $purchasePixTotalValue +=  $purchase->getFinalValue();
+                        break;
+                    }
+                }
+
+                $totalValue += $purchase->getFinalValue();
+                
+            }
+
+            $register = $this->findRegisterById($registerId);
+
+            $this->registerResume->setPurchaseQuantity(count($purchases));
+
+            $this->registerResume->setRegisterInitialValue($register->getInitialValue());
+            $this->registerResume->setTotalValue($totalValue);
+
+            $this->registerResume->setPurchaseCreditTotalValue($purchaseCreditTotalValue);
+            $this->registerResume->setPurchaseDebitTotalValue($purchaseDebitTotalValue);
+            $this->registerResume->setPurchasePixTotalValue($purchasePixTotalValue);
+            $this->registerResume->setPurchaseCashTotalValue($purchaseCashTotalValue);
+
+            return $this->registerResume;
+        }
+
+        public function findRegisterById($registerId){
+            return $this->registerController->findById($registerId);
+        }
+
+        public function setPurchaseFields($result){
+
+            if(!$result) return null;
+
+            $purchases = array();
+
+            while ($data = $result->fetch_assoc()){ 
+
+                $this->purchase = new Purchase();
+                $this->purchase->setId($data['id']);
+                $this->purchase->setPaymentType($data['paymentType']);
+                $this->purchase->setCustomerId($data['customerId']);
+                $this->purchase->setDiscount($data['discount']);
+                $this->purchase->setFinalValue($data['finalValue']);
+                $this->purchase->setHasInvoice($data['hasInvoice']);
+                $this->purchase->setRegisterId($data['registerId']);
+                $this->purchase->setInstallmentNumber($data['installmentNumber']);
+
+                array_push($purchases, $this->purchase);
+            }
+
+            return $purchases;
+        }
     }
 ?>

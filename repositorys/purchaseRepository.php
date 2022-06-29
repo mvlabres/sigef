@@ -53,6 +53,23 @@ require_once('../controller/connection.php');
             }
         }
 
+        public function findByRegisterId($registerId){
+
+            try{
+    
+                $sql = "SELECT id, date, customerId, totalValue, discount, finalValue, registerId, installmentNumber, paymentType, hasInvoice
+                        FROM Purchase 
+                        WHERE registerId = ".$registerId;
+
+                $result = $this->mySqli->query($sql);
+
+                return $result;
+    
+            }catch(Exception $e){
+                return false;
+            }
+        }
+
         public function setInsertQuery($queryPart){
 
             switch ($queryPart) {

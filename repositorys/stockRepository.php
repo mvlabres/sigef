@@ -50,40 +50,21 @@ class StockRepository{
         }
     }
 
-    // public function findById($id){
+    public function writeOffProduct($productCode){
 
-    //     try{
+        try{
 
-    //         $sql = "SELECT id, description, priceId, size, productFamilyId
-    //                 FROM Product
-    //                 WHERE id = ".$id;
+            $sql = "UPDATE Stock SET departureDate = CURDATE(), quantity = 0
+                    WHERE productCode = " . $productCode . " AND quantity > 0
+                    LIMIT 1";
 
-    //         $result = $this->mySqli->query($sql);
-    //         return $result;
+            $this->mySqli->query($sql);
+            return true;
 
-    //     }catch(Exception $e){
-    //         return false;
-    //     }
-    // }
-
-    // public function findLastCreated(){
-
-    //     try{
-
-    //         $sql = "SELECT Product.id, Product.description, priceId, size, productFamilyId, Price.id AS priceId, ProductFamily.id AS productFamilyId 
-    //                 FROM Product 
-    //                 INNER JOIN Price ON priceId = Price.Id 
-    //                 INNER JOIN ProductFamily ON productFamilyId = ProductFamily.id 
-    //                 ORDER BY Product.id DESC LIMIT 1";
-
-
-    //         $result = $this->mySqli->query($sql);
-    //         return $result;
-
-    //     }catch(Exception $e){
-    //         return false;
-    //     }
-    // }
+        }catch(Exception $e){
+            return false;
+        }
+    }
 }
 
 ?>

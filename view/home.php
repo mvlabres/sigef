@@ -81,7 +81,7 @@
                             <a href="home.php?content=sellView.php" class="slds-nav-vertical__action">Venda</a>
                         </li>
                         <li class="slds-nav-vertical__item  menu-item">
-                            <a href="home.php?content=registerView.php" class="slds-nav-vertical__action">caixa</a>
+                            <a href="home.php?content=registerList.php" class="slds-nav-vertical__action">caixa</a>
                         </li>
                         <li class="slds-nav-vertical__item  menu-item">
                             <a href="home.php?content=feeSimulator.php" class="slds-nav-vertical__action">Simulador de taxas</a>

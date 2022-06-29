@@ -52,56 +52,9 @@
             return $stocks;
         }
 
-        public function findByProductCode($productCode){
-            
+        public function writeOffProduct($productCode){
+            return $this->stockRepository->writeOffProduct($productCode);
         }
 
-        // public function getLastCreated(){
-        //     $result = $this->productRepository->findLastCreated();
-        //     $products = $this->getResultValues($result);
-        //     return $products[0]; 
-        // }
-
-        // public function getResultValues($result){
-
-        //     $products = array();
-
-        //     while ($data = $result->fetch_assoc()){ 
-        //         $product = new Product();
-        //         $product->setId($data['id']);
-        //         $product->setDescription($data['description']);
-        //         $product->setPriceTableId($data['priceId']);
-        //         $product->setBarcode();
-        //         $product->setSize($data['size']);
-        //         $product->setProductFamilyId($data['productFamilyId']);
-        //         $product->setPriceTableId($data['priceId']); 
-
-        //         array_push($products, $product);
-
-        //         return $products;
-        //     }
-
-        // }
-
-
-       
-
-        // public function findAll(){
-
-        //     $productFamily = new ProductFamily();
-        //     $productsFamily = array();
-
-        //     $result = $this->productFamilyRepository->findAll();
-
-        //     while ($data = $result->fetch_assoc()){ 
-        //         $productFamily = new ProductFamily();
-        //         $productFamily->setId($data['id']);
-        //         $productFamily->setDescription($data['description']);
-                
-        //         array_push($productsFamily, $productFamily);
-        //     }
-
-        //     return $productsFamily;
-        // }
     }
 ?>

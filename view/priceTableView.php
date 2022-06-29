@@ -53,7 +53,7 @@
         </div>
         <div class="card-body">
             <h2 id="element-with-table-label" class="slds-text-heading_medium slds-m-bottom_xx-small">Cadastro de tabela de preço</h2>
-            <form method="post" action="#" onsubmit="return handleCurrencySubmit()" >
+            <form method="post" action="home.php?content=priceTableView.php" onsubmit="return handleCurrencySubmit()" >
                 <div class="slds-form-element">
                     <div class="slds-grid slds-grid_align-start field-group">
 
@@ -107,29 +107,36 @@
 
                 <div class="readonly-group-field">
                     <div class="slds-grid slds-grid_align-start field-group">
-                        <div class="slds-form-element slds-size_1-of-5">
+                        <div class="slds-form-element slds-size_1-of-6">
                             <label class="slds-form-element__label">Custo Total</label>
                             <div class="slds-form-element__control">
                                 <input value="<?php if($priceTable->getTotalCost() != null) echo $priceTable->getTotalCost(); ?>" name="totalCost" type="currency" class="slds-input readonly" readonly />
                             </div>
                         </div>
 
-                        <div class="slds-form-element slds-size_1-of-5">
+                        <div class="slds-form-element slds-size_1-of-6">
                             <label class="slds-form-element__label">Margem de lucro (%)</label>
                             <div class="slds-form-element__control">
                                 <input value="<?php if($priceTable->getProfitMargin() != null) echo $priceTable->getProfitMargin(); ?>" name="profitMargin" type="number" class="slds-input readonly" readonly />
                             </div>
                         </div>
 
-                        <div class="slds-form-element slds-size_1-of-5">
+                        <div class="slds-form-element slds-size_1-of-6">
                             <label class="slds-form-element__label">Lucro (R$)</label>
                             <div class="slds-form-element__control">
                                 <input value="<?php if($priceTable->getProfit() != null) echo $priceTable->getProfit(); ?>" name="profit" type="currency" class="slds-input readonly" readonly />
                             </div>
                         </div>
 
-                        <div class="slds-form-element slds-size_1-of-5">
+                        <div class="slds-form-element slds-size_1-of-6">
                             <label class="slds-form-element__label">Preço final</label>
+                            <div class="slds-form-element__control">
+                                <input id="priceCalculated" value="<?php if($priceTable->getCalculatedPrice() != null) echo $priceTable->getCalculatedPrice(); ?>" name="priceCalculated" type="currency" class="slds-input readonly" readonly />
+                            </div>
+                        </div>
+
+                        <div class="slds-form-element slds-size_1-of-6">
+                            <label class="slds-form-element__label">Preço final (arredondando)</label>
                             <div class="slds-form-element__control">
                                 <input id="finalPrice" value="<?php if($priceTable->getFinalPrice() != null) echo $priceTable->getFinalPrice(); ?>" name="finalPrice" type="currency" oninput="handleFinalPriceChange()" class="slds-input readonly" readonly />
                             </div>
